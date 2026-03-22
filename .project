@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>Usuarios.txt</name>
+			<type>1</type>
+			<location>C:/Users/cacer/OneDrive/Escritorio/UUUUU/POO/Prácticas java/Usuarios.txt</location>
+		</link>
+	</linkedResources>
 </projectDescription>
