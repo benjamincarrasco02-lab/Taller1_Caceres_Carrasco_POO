@@ -1,6 +1,6 @@
 //Antonia Ignacia Cáceres Calderón - 22.050.742-4 - ICCI
 //Benjamín Andrés Carrasco Santander - 21.983.969-3 -  ICCI
-package talleresPOO;
+package primerTaller;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -22,7 +22,6 @@ public class taller1 {
 
             while ((linea) != null) {
                 String[] partes = linea.split(";");
-
                 listaPartes.add(partes);
                 
                 linea = br.readLine();
@@ -37,41 +36,41 @@ public class taller1 {
     }  
     
     public static void menuUsuarios(Scanner scanner) {
+
+    	ArrayList<String[]> listaUsuarios = abrirArchUsuarios();
     	
-    	 ArrayList<String[]> listaID = abrirArchUsuarios();
+    	System.out.println("Usuario: ");
+        String ingresoNombre = String.valueOf(scanner.nextLine());
     	
-    	String[] partes2 = listaID.get(0);
-        String listaNombres = partes2[0];
-        String listaContraseñas = partes2[1];
+        System.out.println("Contraseña: ");
+        String ingresoContraseña = String.valueOf(scanner.nextLine());
+    	
+
+    	for (int i = 0; i < listaUsuarios.size(); i++) {
+
+    		if (listaUsuarios.get(i)[0].equals(ingresoNombre) && listaUsuarios.get(i)[1].equals(ingresoContraseña)) {
+    			System.out.println("Acceso correcto!");
+    			break;
+    		} else {
+    			System.out.println("Acceso denegado");
+    			
+    			
+    			
+    		}
+    		
+    	}
+       
         
-        System.out.println(listaNombres);
-        System.out.println(listaContraseñas);
-        
-        if ((op) == 1) {
-        	System.out.println("Usuario: ");
-            String ingresoNombre = String.valueOf(scanner.nextLine());
-            
-            while ((!listaID.contains(ingresoNombre))) {
-                System.out.println("Usuario no existente. Vuelva a intentar");
-                ingresoNombre = String.valueOf(scanner.nextLine());
-                }
-            
-            System.out.println("Contraseña: ");
-            String ingresoContraseña = String.valueOf(scanner.nextLine());
-            
-     
-            
-            
-            }
-    	
-    	
-    	
-    }
     
+
+      
+            
+    }
+
     public static void menuAnalisis(Scanner scanner){
         int op;
         do {
-            System.out.println("Bienvenido al menu de analisis! \nQue deseas realizar?");
+            System.out.println("Bienvenido al menu de análisis! \n¿Qué deseas realizar?");
             System.out.println("1) Actividad más realizada");
             System.out.println("2) Actividad más realizada por cada usuario");
             System.out.println("3) Usuario con mayor procastinacion");
@@ -101,9 +100,12 @@ public class taller1 {
             }
 
         } while (op != 5);
+        
+
     }
     
-    public static void menuPrincipal(Scanner scanner) {
+    public static int menuPrincipal(Scanner scanner) {
+
         int op;
         do {
         	System.out.println("¡Bienvenido!\nPorfavor escoja una opción:\n1) Menu de Usuarios\n2) Menu de Analisis\n3) Salir");
@@ -124,24 +126,17 @@ public class taller1 {
             }
 
         } while (op != 3);
-    }
+        
+     
+        return op;
+    
+    } 
 
     public static void main(String[] args) {
-        
-        //Acá empieza el inicio de los menús
-
-        Scanner scanner = new Scanner(System.in);
-        
-       //Acá abrimos el menú principal
+    	Scanner scanner = new Scanner(System.in);
+        //Acá abrimos el menú principal
         menuPrincipal(scanner);
         
-        
-        
-        
-        
-             
-            
-        scanner.close();
     }
 
         } 
