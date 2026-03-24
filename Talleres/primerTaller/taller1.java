@@ -46,20 +46,60 @@ public class taller1 {
         String ingresoContraseña = String.valueOf(scanner.nextLine());
     	
 
-    	for (int i = 0; i < listaUsuarios.size(); i++) {
-
+    	for (int i = 0; i < listaUsuarios.size();) {
+    		
     		if (listaUsuarios.get(i)[0].equals(ingresoNombre) && listaUsuarios.get(i)[1].equals(ingresoContraseña)) {
     			System.out.println("Acceso correcto!");
+    			System.out.printf("Bienvenido " + ingresoNombre);
     			break;
     		} else {
     			System.out.println("Acceso denegado");
-    			
-    			
+    			break;
     			
     		}
     		
     	}
-       
+    	
+    	System.out.println();
+    	System.out.println("\n¿Qué deseas realizar?");
+    	System.out.println();
+    	
+    	int ingresoOpcion;
+    	
+    	do {
+    		System.out.println("1) Registrar actividad.\n2) Modificar actividad.\n3) Eliminar actividad.\n4) Cambiar contraseña.\n5) Salir.");
+    		ingresoOpcion = Integer.valueOf(scanner.nextLine());
+        	
+        	
+        	switch(ingresoOpcion) {
+        	 
+        		case 1:
+        		
+        			
+        			
+        		case 2:
+        			System.out.println("¿Cuál actividad deseas modificar?");
+        			
+        			
+        		case 3:
+        			
+        		case 4:
+        			
+        		case 5:
+        			
+        		default:
+        			System.out.println("Opción inválida");
+        	
+        	} 
+        		
+        	
+        	
+    	} while (ingresoOpcion != 5);
+    	
+    	
+    	
+    	
+    	
         
     
 
@@ -109,7 +149,7 @@ public class taller1 {
         int op;
         do {
         	System.out.println("¡Bienvenido!\nPorfavor escoja una opción:\n1) Menu de Usuarios\n2) Menu de Analisis\n3) Salir");
-            op = Integer.parseInt(scanner.nextLine());
+            op = Integer.valueOf(scanner.nextLine());
 
             switch (op) {
                 case 1:
