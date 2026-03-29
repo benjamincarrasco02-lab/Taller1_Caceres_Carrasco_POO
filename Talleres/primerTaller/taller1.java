@@ -5,39 +5,77 @@ package primerTaller;
 
 //Acá estan todas las importaciones
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.BufferedWriter;
 
 public class taller1 {
 
+	//Acá se crea el método de sobreescritura para registros
+	public static void reescribirTXT1(String txt, String[] lista, int datos) {
+			
+			try {
+				BufferedWriter bw = new BufferedWriter(new FileWriter(txt));
+				
+				for (int i = 0; i < datos; i++) {
+					bw.write(lista[i]);
+					bw.newLine();
+				}
+				bw.close();
+				
+			} catch (IOException e) {
+				System.out.println("Error al modificar el texto" + e.getMessage());
+			}
+			
+		}
+	//Acá se crea el método de sobreescritura para usuarios
+	public static void reescribirTXT2(String txt, String[][] lista, int datos) {
+		
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(txt));
+			
+			for (int i = 0; i < datos; i++) {
+				bw.write(lista[i][0] + ";" + lista[i][1]);
+				bw.newLine();
+			}
+			bw.close();
+			
+		} catch (IOException e) {
+			System.out.println("Error al modificar el texto" + e.getMessage());
+		}
+		
+	}
 	//Acá se abren ambos archivos
-	
-    public static ArrayList<String[]> abrirArchUsuarios() {
-    	
-    	ArrayList<String[]> listaPartes = new ArrayList<>();
+	public static void abrirArchUsuarios() {
+    cantidadUsuarios = 0;
 
-        try {
-            BufferedReader br = new BufferedReader(new FileReader("Usuarios.txt"));
-            String linea = br.readLine();
-           
-            while ((linea) != null) {
-                String[] partes = linea.split(";");
-                listaPartes.add(partes);
-                
-                linea = br.readLine();
-            }
-            br.close(); 
-            
-        } catch (IOException e) {
-            System.out.println("Error al leer el archivo " + e.getMessage());
+    try {
+        BufferedReader br = new BufferedReader(new FileReader("Usuarios.txt"));
+        String linea;
+
+        while ((linea = br.readLine()) != null) {
+            String[] partes = linea.split(";");
+
+            usuarios[cantidadUsuarios][0] = partes[0];
+            usuarios[cantidadUsuarios][1] = partes[1];
+
+            cantidadUsuarios++;
         }
-        return listaPartes;
-    }  
 
+        br.close();
+
+    } catch (IOException e) {
+        System.out.println("Error al leer el archivo " + e.getMessage());
+    }
+	}
+	
     static String[] registros = new String[300];
     static int cantidadRegistros = 0;
+    static String[][] usuarios = new String[300][2];
+    static int cantidadUsuarios = 0;
+    
     
     public static void abrirArchRegistros() {
         cantidadRegistros = 0;
@@ -59,77 +97,72 @@ public class taller1 {
     
     //Desde acá se empeiza a trabajar el menú de usuarios
     
-   
+
     public static int verificarUsuarios(Scanner scanner) {
-    	
-	ArrayList<String[]> listaUsuarios = abrirArchUsuarios();
-	    	
-	    	System.out.println("Usuario: ");
-	        String ingresoNombre = scanner.nextLine();	    	
-	        System.out.println("Contraseña: ");
-	        String ingresoContraseña = scanner.nextLine();
-	        
-	        int i;
-	    	for (i = 0; i < listaUsuarios.size(); i++) {
-	    		String[] usuario = listaUsuarios.get(i);
-	    		
-	    		String nombre = usuario[0];
-	    		String contraseña = usuario[1];
-	    		
-	    		if (nombre.equals(ingresoNombre) && contraseña.equals(ingresoContraseña)) {
-	    			System.out.println("Acceso correcto!");
-	        		System.out.printf("Bienvenido " + ingresoNombre + "!");
-	        		System.out.println();
-	        		return i;
-	        		
-	    	}
-		
-	    }
-	    	System.out.println("Acceso denegado");
-			menuPrincipal(scanner);
-			return -1;
+
+        abrirArchUsuarios();
+
+        System.out.println("Usuario: ");
+        String ingresoNombre = scanner.nextLine();
+
+        System.out.println("Contraseña: ");
+        String ingresoContraseña = scanner.nextLine();
+
+        for (int i = 0; i < cantidadUsuarios; i++) {
+
+            String nombre = usuarios[i][0];
+            String contraseña = usuarios[i][1];
+
+            if (nombre.equals(ingresoNombre) && contraseña.equals(ingresoContraseña)) {
+
+                System.out.println("Acceso correcto!");
+                System.out.println("Bienvenido " + ingresoNombre + "!");
+                System.out.println();
+
+                return i;
+            }
+        }
+
+        System.out.println("Acceso denegado");
+        menuPrincipal(scanner);
+
+        return -1;
     }
-    //REVISAR****
+
     public static void registrarActividad(Scanner scanner) {
     	abrirArchRegistros();
-    	String[] partes = registros[0].split(";");
-    	String ID = partes[0];
-    	String fecha = partes[1];
-    	String horas = partes[2];
-    	String actividad = partes[3];
+    	String nuevaLinea;
+
+    	System.out.println("Ingresa la nueva actividad (ID;dia/mes/año;cantHoras;Actividad): ");
+    	String datos = scanner.nextLine();
+    	String[] partes2 = datos.split(";");
     	
-    	String nuevaLinea = ID + ";" + fecha + ";" + horas + ";" + actividad;
+    	String ID = partes2[0];
+    	String fecha = partes2[1];
+    	String horas = partes2[2];
+    	String actividad = partes2[3];
     	
-    	do {
-        	System.out.println("Ingresa la nueva actividad (ID;dia/mes/año;cantHoras;Actividad): ");
-        	String datos = scanner.nextLine();
-        	String[] partes2 = datos.split(";");
-        	
-        	ID = partes2[0];
-        	fecha = partes2[1];
-        	horas = partes2[2];
-        	actividad = partes2[3];
-        	
-        	nuevaLinea = ID + ";" + fecha + ";" + horas + ";" + actividad;
-        	int tamaño = registros.length;
-        	int nuevoTamaño = tamaño + 1;
-        	//Revisar*******
-        	registros[nuevoTamaño] = nuevaLinea;
-        	System.out.println(nuevaLinea);
-        	
-    	} while (nuevaLinea.length() != 4);
+    	nuevaLinea = ID + ";" + fecha + ";" + horas + ";" + actividad;
+    	registros[cantidadRegistros] = nuevaLinea;
+    	cantidadRegistros++;
+    	System.out.println("Actividad registrada exitosamente");
     	
-    	
+    	reescribirTXT1("Registros.txt", registros, cantidadRegistros);
     }
-    
-    public static void modificarActividad(Scanner scanner) {
+
+    public static void modificarActividad(Scanner scanner, int indice) {
     	abrirArchRegistros();
+    	
+		for (int i = 0; i < cantidadRegistros; i++) {
+			String[] partes = registros[i].split(";");
+			
+			if (partes[0].equals(usuarios[indice][0])) { 
+				System.out.println((i + 1) + ")" + registros[i]);
+            
+			}
+		}
+   
     	System.out.println("¿Cuál actividad deseas modificar?");
-    	
-    	
-    	for (int i = 0; i < cantidadRegistros; i++) {
-            System.out.println((i + 1) + ")" + registros[i]);
-        }	
     		
     	int actividadModificada = Integer.parseInt(scanner.nextLine()) -1;
     	
@@ -175,20 +208,21 @@ public class taller1 {
 			default:
 				System.out.println("Opción inválida");
 				System.out.println();
-				modificarActividad(scanner);
+				modificarActividad(scanner, indice);
 				break;
 		
-			} 
+			} 	
 
 			registros[actividadModificada] = partes[0] + ";" + fechaa + ";" + nuevasHoras + ";" + nuevaActividad;
 			
     		
     	} while (opcionn != 0);
+		reescribirTXT1("Registros.txt", registros, cantidadRegistros);
 			
     }
     
     public static void eliminarActividad(Scanner scanner) {
-    	
+    	abrirArchRegistros();
     	System.out.println("¿Qué actividad deseas eliminar?");
     	
     	for (int i = 0; i < cantidadRegistros; i++) {
@@ -197,42 +231,45 @@ public class taller1 {
     	
     	int actividadEliminada = Integer.parseInt(scanner.nextLine()) -1;
     	
-    	registros[actividadEliminada] = null;
+    	for (int i = actividadEliminada; i < cantidadRegistros; i++) {
+    		registros[i] = registros[i + 1];
+    	}
+    	
+    	registros[cantidadRegistros - 1] = null;
+    	cantidadRegistros--;
+    	reescribirTXT1("Registros.txt", registros, cantidadRegistros);
     	System.out.println("Actividad eliminada con éxito");
     	System.out.println();
+    	
+    	
     }
     
     public static void cambiarContraseña(Scanner scanner, int indice) {
-    	
-    	ArrayList<String[]> listaUsuarios = abrirArchUsuarios();
-    	
 
-    	System.out.println("Ingrese contraseña anterior: ");
-    	String anteriorContra = scanner.nextLine();
-    	
-    	String[] datoss = listaUsuarios.get(indice);
+        abrirArchUsuarios();
 
-		if (datoss[1].equals(anteriorContra)) {
+        System.out.println("Ingrese contraseña anterior:");
+        String anteriorContra = scanner.nextLine();
 
-			System.out.println("Ingrese nueva contraseña: ");
-	    	String nuevaContra = scanner.nextLine();
-			
-	    	datoss[1] = nuevaContra;
-	    	
-	    	System.out.println("Contraseña cambiada con éxito");
-	    	System.out.println();
-	    	
+        if (usuarios[indice][1].equals(anteriorContra)) {
 
-		} else {
-	
-			System.out.println("Contraseña incorrecta\nPor seguridad, verifica nuevamente tu identidad porfavor");
-            menuUsuarios(scanner, indice);
+            System.out.println("Ingrese nueva contraseña:");
+            String nuevaContra = scanner.nextLine();
+
+            usuarios[indice][1] = nuevaContra;
+
+            System.out.println("Contraseña cambiada con éxito");
+            System.out.println();
             
-    	}
+            reescribirTXT2("Usuarios.txt", usuarios, cantidadUsuarios);
 
-    	
+        } else {
+
+            System.out.println("Contraseña incorrecta");
+            menuUsuarios(scanner, indice);
+        }
     }
-       
+    
     public static void menuUsuarios(Scanner scanner, int indice) {
 
     	System.out.println("\n¿Qué deseas realizar?");
@@ -251,7 +288,7 @@ public class taller1 {
         			break;
         			
         		case 2:
-        			modificarActividad(scanner);
+        			modificarActividad(scanner, indice);
         			break;
         			
         		case 3:
@@ -264,7 +301,6 @@ public class taller1 {
         			
         		case 5:
         			System.out.println("Saliendo...");
-        			menuPrincipal(scanner);
         			break;
         			
         		default:
@@ -316,11 +352,11 @@ public class taller1 {
     }
 
     public static void actividadMasRealizadaPorCadaUsuario() {
-    ArrayList<String[]> listaUsuarios = abrirArchUsuarios();
+    abrirArchUsuarios();
 
-    for (int u = 0; u < listaUsuarios.size(); u++) {
+    for (int u = 0; u < cantidadUsuarios; u++) {
 
-        String usuario = listaUsuarios.get(u)[0];
+        String usuario = usuarios[u][0];
 
         String[] actividades = new String[300];
         int[] contador = new int[300];
@@ -331,6 +367,7 @@ public class taller1 {
         for (int i = 0; i < cantidadRegistros; i++) {
 
             String[] partes = registros[i].split(";");
+
             String user = partes[0];
             String actividad = partes[3];
             int horas = Integer.parseInt(partes[2]);
@@ -368,38 +405,42 @@ public class taller1 {
             }
         }
 
-        System.out.println(usuario + " -> " + actividades[pos] + " -> con " + horasTotales[pos] + " horas registradas");
+        if (cantidadActividades > 0) {
+            System.out.println(usuario + " -> " + actividades[pos] + " -> con " + horasTotales[pos] + " horas registradas");
+        }
     }
 }
 
     public static void usuarioMasProcastinacion() {
-    ArrayList<String[]> listaUsuarios = abrirArchUsuarios();
 
-    String usuarioMax = "";
-    int maxHoras = 0;
+        abrirArchUsuarios();
 
-    for (int u = 0; u < listaUsuarios.size(); u++) {
+        String usuarioMax = "";
+        int maxHoras = 0;
 
-        String usuario = listaUsuarios.get(u)[0];
-        int suma = 0;
+        for (int u = 0; u < cantidadUsuarios; u++) {
 
-        for (int i = 0; i < cantidadRegistros; i++) {
+            String usuario = usuarios[u][0];
+            int suma = 0;
 
-            String[] partes = registros[i].split(";");
+            for (int i = 0; i < cantidadRegistros; i++) {
 
-            if (partes[0].equals(usuario)) {
-                suma += Integer.parseInt(partes[2]);
+                String[] partes = registros[i].split(";");
+
+                if (partes[0].equals(usuario)) {
+                    suma += Integer.parseInt(partes[2]);
+                }
+            }
+
+            if (suma > maxHoras) {
+
+                maxHoras = suma;
+                usuarioMax = usuario;
             }
         }
 
-        if (suma > maxHoras) {
-            maxHoras = suma;
-            usuarioMax = usuario;
-        }
+        System.out.println("Usuario con mayor procrastinación: " + usuarioMax + " (" + maxHoras + " horas)");
     }
-
-    System.out.println("Usuario con mayor procrastinación: " + usuarioMax + " (" + maxHoras + " horas)");
-}
    
     public static void menuAnalisis(Scanner scanner){
         int op;
@@ -450,15 +491,16 @@ public class taller1 {
                 	int indice = verificarUsuarios(scanner);
                 	if (indice != -1) {
                 		menuUsuarios(scanner, indice);
-                        break;
                 	}
-                    
+                    break;
                 case 2:
                     menuAnalisis(scanner);
                     break;
+                    
                 case 3:
                     System.out.println("Saliendo...");
                     break;
+                    
                 default:
                     System.out.println("Opción inválida");
             }
@@ -480,8 +522,7 @@ public class taller1 {
         
     }
 
-        } 
-
+        }
 
 
 
