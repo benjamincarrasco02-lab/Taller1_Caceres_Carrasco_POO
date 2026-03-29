@@ -89,7 +89,7 @@ public class taller1 {
 			menuPrincipal(scanner);
 			return -1;
     }
-    
+    //REVISAR****
     public static void registrarActividad(Scanner scanner) {
     	abrirArchRegistros();
     	String[] partes = registros[0].split(";");
@@ -101,7 +101,6 @@ public class taller1 {
     	String nuevaLinea = ID + ";" + fecha + ";" + horas + ";" + actividad;
     	
     	do {
-
         	System.out.println("Ingresa la nueva actividad (ID;dia/mes/año;cantHoras;Actividad): ");
         	String datos = scanner.nextLine();
         	String[] partes2 = datos.split(";");
@@ -114,7 +113,7 @@ public class taller1 {
         	nuevaLinea = ID + ";" + fecha + ";" + horas + ";" + actividad;
         	int tamaño = registros.length;
         	int nuevoTamaño = tamaño + 1;
-        	
+        	//Revisar*******
         	registros[nuevoTamaño] = nuevaLinea;
         	System.out.println(nuevaLinea);
         	
@@ -127,28 +126,23 @@ public class taller1 {
     	abrirArchRegistros();
     	System.out.println("¿Cuál actividad deseas modificar?");
     	
-    	String partesRegistros = registros[0];
-    	String[] partes = partesRegistros.split(";");
-    	String identidad = partes[0];
-    	String fecha = partes[1];
-    	String horas = partes[2];
-    	String actividad = partes[3];
-
-    	int i;
     	
-    	for (i = 0; i < cantidadRegistros; i++) {
-
-			System.out.printf((i + 1) + ") " +  registros[i]);
-		
-    		}
+    	for (int i = 0; i < cantidadRegistros; i++) {
+            System.out.println((i + 1) + ")" + registros[i]);
+        }	
     		
-
+    	int actividadModificada = Integer.parseInt(scanner.nextLine()) -1;
+    	
+    	String[] partes = registros[actividadModificada].split(";");
+    	String fechaa = partes[1];
+    	String nuevasHoras = partes[2];
+    	String nuevaActividad = partes[3];
+    	
     	int opcionn;
     	
 		do {
 			System.out.println("¿Qué deseas modificar?\n0) Regresar\n1) Fecha\n2) Duracion\n3) Tipo de actividad");
-			
-			
+		
 			opcionn = Integer.parseInt(scanner.nextLine());
 			
 			switch (opcionn) {
@@ -159,24 +153,21 @@ public class taller1 {
 			
 			case 1:
 				System.out.println("Ingrese nueva fecha: ");
-				String nuevaFecha = scanner.nextLine();
-				fecha = nuevaFecha;
+				fechaa = scanner.nextLine();
 				System.out.println("Fecha modificada con éxito!");
 				System.out.println();
 				break;
 				
 			case 2:
 				System.out.println("Ingrese nueva duración: ");
-				String nuevasHoras = scanner.nextLine();
-				horas = nuevasHoras;
+				nuevasHoras = scanner.nextLine();
 				System.out.println("Horas modificadas con éxito!");
 				System.out.println();
 				break;
 				
 			case 3:
 				System.out.println("Ingrese el tipo de actividad: ");
-				String nuevaActividad = scanner.nextLine();
-				actividad = nuevaActividad;
+				nuevaActividad = scanner.nextLine();
 				System.out.println("Actividad modificada con éxito!");
 				System.out.println();
 				break;
@@ -186,25 +177,25 @@ public class taller1 {
 				System.out.println();
 				modificarActividad(scanner);
 				break;
-			
-			
+		
 			} 
 
+			registros[actividadModificada] = partes[0] + ";" + fechaa + ";" + nuevasHoras + ";" + nuevaActividad;
+			
     		
     	} while (opcionn != 0);
-
+			
     }
     
     public static void eliminarActividad(Scanner scanner) {
     	
     	System.out.println("¿Qué actividad deseas eliminar?");
     	
-    	int i;
-    	for (i = 0; i < cantidadRegistros; i++) {
-			System.out.printf((i + 1) + ") " +  registros[i]);
-    		}
+    	for (int i = 0; i < cantidadRegistros; i++) {
+            System.out.println((i + 1) + ")" + registros[i]);
+        }
     	
-    	int actividadEliminada = Integer.parseInt(scanner.nextLine());
+    	int actividadEliminada = Integer.parseInt(scanner.nextLine()) -1;
     	
     	registros[actividadEliminada] = null;
     	System.out.println("Actividad eliminada con éxito");
@@ -409,8 +400,7 @@ public class taller1 {
 
     System.out.println("Usuario con mayor procrastinación: " + usuarioMax + " (" + maxHoras + " horas)");
 }
-    
-  
+   
     public static void menuAnalisis(Scanner scanner){
         int op;
         do {
@@ -491,6 +481,7 @@ public class taller1 {
     }
 
         } 
+
 
 
 
