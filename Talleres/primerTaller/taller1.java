@@ -59,9 +59,67 @@ public class taller1 {
     
     //Desde acá se empeiza a trabajar el menú de usuarios
     
-    public static void registrarActividad() {
+   
+    public static int verificarUsuarios(Scanner scanner) {
     	
-    	System.out.println("Ingresa la nueva actividad: ");
+	ArrayList<String[]> listaUsuarios = abrirArchUsuarios();
+	    	
+	    	System.out.println("Usuario: ");
+	        String ingresoNombre = scanner.nextLine();	    	
+	        System.out.println("Contraseña: ");
+	        String ingresoContraseña = scanner.nextLine();
+	        
+	        int i;
+	    	for (i = 0; i < listaUsuarios.size(); i++) {
+	    		String[] usuario = listaUsuarios.get(i);
+	    		
+	    		String nombre = usuario[0];
+	    		String contraseña = usuario[1];
+	    		
+	    		if (nombre.equals(ingresoNombre) && contraseña.equals(ingresoContraseña)) {
+	    			System.out.println("Acceso correcto!");
+	        		System.out.printf("Bienvenido " + ingresoNombre + "!");
+	        		System.out.println();
+	        		return i;
+	        		
+	    	}
+		
+	    }
+	    	System.out.println("Acceso denegado");
+			menuPrincipal(scanner);
+			return -1;
+    }
+    
+    public static void registrarActividad(Scanner scanner) {
+    	abrirArchRegistros();
+    	String[] partes = registros[0].split(";");
+    	String ID = partes[0];
+    	String fecha = partes[1];
+    	String horas = partes[2];
+    	String actividad = partes[3];
+    	
+    	String nuevaLinea = ID + ";" + fecha + ";" + horas + ";" + actividad;
+    	
+    	do {
+
+        	System.out.println("Ingresa la nueva actividad (ID;dia/mes/año;cantHoras;Actividad): ");
+        	String datos = scanner.nextLine();
+        	String[] partes2 = datos.split(";");
+        	
+        	ID = partes2[0];
+        	fecha = partes2[1];
+        	horas = partes2[2];
+        	actividad = partes2[3];
+        	
+        	nuevaLinea = ID + ";" + fecha + ";" + horas + ";" + actividad;
+        	int tamaño = registros.length;
+        	int nuevoTamaño = tamaño + 1;
+        	
+        	registros[nuevoTamaño] = nuevaLinea;
+        	System.out.println(nuevaLinea);
+        	
+    	} while (nuevaLinea.length() != 4);
+    	
     	
     }
     
@@ -72,105 +130,120 @@ public class taller1 {
     	String partesRegistros = registros[0];
     	String[] partes = partesRegistros.split(";");
     	String identidad = partes[0];
+    	String fecha = partes[1];
+    	String horas = partes[2];
+    	String actividad = partes[3];
 
-    	for (int i = -1; i < cantidadRegistros; i++) {
-    		if (registros[i].equals(identidad)) {
-    			System.out.printf((i + 1) + ") " +  registros[i]);
-    		}
+    	int i;
     	
+    	for (i = 0; i < cantidadRegistros; i++) {
+
+			System.out.printf((i + 1) + ") " +  registros[i]);
+		
     		}
     		
-		System.out.println("¿Qué deseas modificar?\n 0) Regresar\n1) Fecha\n2) Duracion\n3) Tipo de actividad");
-		int opcionn = Integer.parseInt(scanner.nextLine());		
-		
-		if (opcionn == 0) {
-			return;
+
+    	int opcionn;
+    	
+		do {
+			System.out.println("¿Qué deseas modificar?\n0) Regresar\n1) Fecha\n2) Duracion\n3) Tipo de actividad");
+			
+			
+			opcionn = Integer.parseInt(scanner.nextLine());
+			
+			switch (opcionn) {
+			
+			case 0:
+				System.out.println("Regresando...");
+				break;
+			
+			case 1:
+				System.out.println("Ingrese nueva fecha: ");
+				String nuevaFecha = scanner.nextLine();
+				fecha = nuevaFecha;
+				System.out.println("Fecha modificada con éxito!");
+				System.out.println();
+				break;
+				
+			case 2:
+				System.out.println("Ingrese nueva duración: ");
+				String nuevasHoras = scanner.nextLine();
+				horas = nuevasHoras;
+				System.out.println("Horas modificadas con éxito!");
+				System.out.println();
+				break;
+				
+			case 3:
+				System.out.println("Ingrese el tipo de actividad: ");
+				String nuevaActividad = scanner.nextLine();
+				actividad = nuevaActividad;
+				System.out.println("Actividad modificada con éxito!");
+				System.out.println();
+				break;
+				
+			default:
+				System.out.println("Opción inválida");
+				System.out.println();
+				modificarActividad(scanner);
+				break;
+			
+			
+			} 
+
     		
-    		
-    		
-    	}
+    	} while (opcionn != 0);
 
     }
     
-    public static void eliminarActividad() {
+    public static void eliminarActividad(Scanner scanner) {
     	
     	System.out.println("¿Qué actividad deseas eliminar?");
+    	
+    	int i;
+    	for (i = 0; i < cantidadRegistros; i++) {
+			System.out.printf((i + 1) + ") " +  registros[i]);
+    		}
+    	
+    	int actividadEliminada = Integer.parseInt(scanner.nextLine());
+    	
+    	registros[actividadEliminada] = null;
+    	System.out.println("Actividad eliminada con éxito");
+    	System.out.println();
     }
     
-    public static void cambiarContraseña(Scanner scanner) {
+    public static void cambiarContraseña(Scanner scanner, int indice) {
     	
     	ArrayList<String[]> listaUsuarios = abrirArchUsuarios();
+    	
 
     	System.out.println("Ingrese contraseña anterior: ");
     	String anteriorContra = scanner.nextLine();
+    	
+    	String[] datoss = listaUsuarios.get(indice);
 
-    	for (int i = 0; i < listaUsuarios.size(); i++) {
-    		String[] datos = listaUsuarios.get(i);
-    		String contraseñaa = datos[1];
-    		
-    		if (contraseñaa.equals(anteriorContra)) {
-    			
-    			System.out.println("Ingrese nueva contraseña: ");
-    	    	String nuevaContra = scanner.nextLine();
-    			
-    	    	contraseñaa = nuevaContra;
-    	    	
-    	    	System.out.println("Contraseña cambiada con éxito");
-    	    	System.out.println();
-    	    	break;
-    		} else {
-    			System.out.println("Contraseña incorrecta\nPor seguridad, verifica nuevamente tu identidad porfavor");
-    			menuUsuarios(scanner);
-    			break;
-    			
-    		}
-    		
+		if (datoss[1].equals(anteriorContra)) {
+
+			System.out.println("Ingrese nueva contraseña: ");
+	    	String nuevaContra = scanner.nextLine();
+			
+	    	datoss[1] = nuevaContra;
+	    	
+	    	System.out.println("Contraseña cambiada con éxito");
+	    	System.out.println();
+	    	
+
+		} else {
+	
+			System.out.println("Contraseña incorrecta\nPor seguridad, verifica nuevamente tu identidad porfavor");
+            menuUsuarios(scanner, indice);
+            
     	}
 
     	
     }
-    
-    public static void verificarUsuarios(Scanner scanner) {
-    	
-	ArrayList<String[]> listaUsuarios = abrirArchUsuarios();
-	    	
-	    	System.out.println("Usuario: ");
-	        String ingresoNombre = String.valueOf(scanner.nextLine());
-	    	
-	        System.out.println("Contraseña: ");
-	        String ingresoContraseña = String.valueOf(scanner.nextLine());
-	        
-	    	boolean seEncontro = false;
-	    	
-	    	for (int i = 0; i < listaUsuarios.size(); i++) {
-	    		String[] usuario = listaUsuarios.get(i);
-	    		
-	    		String nombre = usuario[0];
-	    		String contraseña = usuario[1];
-	    		
-	    		if (nombre.equals(ingresoNombre) && contraseña.equals(ingresoContraseña)) {
-	    			seEncontro = true;
-	    			break;
-	    		}
-	    		
-    	}
-    	
-    	if (seEncontro) {
-    		System.out.println("Acceso correcto!");
-    		System.out.printf("Bienvenido " + ingresoNombre + "!");
-    		System.out.println();
-    	} else {
-    		System.out.println("Acceso denegado");
-    		menuPrincipal(scanner);
-    	}
-    	
-    	
-    }
-    
-    public static void menuUsuarios(Scanner scanner) {
+       
+    public static void menuUsuarios(Scanner scanner, int indice) {
 
-    	verificarUsuarios(scanner);
-    	
     	System.out.println("\n¿Qué deseas realizar?");
     	System.out.println();
     	
@@ -183,7 +256,7 @@ public class taller1 {
         	switch(ingresoOpcion) {
         	 
         		case 1:
-        			registrarActividad();
+        			registrarActividad(scanner);
         			break;
         			
         		case 2:
@@ -191,11 +264,11 @@ public class taller1 {
         			break;
         			
         		case 3:
-        			eliminarActividad();
+        			eliminarActividad(scanner);
         			break;
         			
         		case 4:
-        			cambiarContraseña(scanner);
+        			cambiarContraseña(scanner, indice);
         			break;
         			
         		case 5:
@@ -336,7 +409,7 @@ public class taller1 {
 
     System.out.println("Usuario con mayor procrastinación: " + usuarioMax + " (" + maxHoras + " horas)");
 }
-
+    
   
     public static void menuAnalisis(Scanner scanner){
         int op;
@@ -375,15 +448,21 @@ public class taller1 {
     //Acá tenemos el menú principál (el de las opciones) y el main
     
     public static int menuPrincipal(Scanner scanner) {
+    	
         int op;
         do {
-        	System.out.println("¡Bienvenido!\nPorfavor escoja una opción:\n1) Menu de Usuarios\n2) Menu de Analisis\n3) Salir");
+        	System.out.println("¡Bienvenido!\nPorfavor escoja una opción:\n1) Menu de Usuarios\n2) Menu de Análisis\n3) Salir");
+        	
             try {
             op = Integer.parseInt(scanner.nextLine());
             switch (op) {
                 case 1:
-                    menuUsuarios(scanner);
-                    break;
+                	int indice = verificarUsuarios(scanner);
+                	if (indice != -1) {
+                		menuUsuarios(scanner, indice);
+                        break;
+                	}
+                    
                 case 2:
                     menuAnalisis(scanner);
                     break;
@@ -394,7 +473,7 @@ public class taller1 {
                     System.out.println("Opción inválida");
             }
         } catch (Exception e) {
-            System.out.println("Opción inválida, Ingresa el numero de la opcion");
+            System.out.println("Opción inválida, Ingresa el número de la opcion");
             op = 0;
         }
     } while (op != 3);
@@ -407,6 +486,7 @@ public class taller1 {
     	Scanner scanner = new Scanner(System.in);
         //Acá abrimos el menú principal
         menuPrincipal(scanner);
+        
         
     }
 
