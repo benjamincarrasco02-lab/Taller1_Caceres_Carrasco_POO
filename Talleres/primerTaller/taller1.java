@@ -1,8 +1,5 @@
 //Antonia Ignacia Cáceres Calderón - 22.050.742-4 - ICCI
 //Benjamín Andrés Carrasco Santander - 21.983.969-3 -  ICCI
-
-package primerTaller;
-
 //Acá estan todas las importaciones
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -124,7 +121,7 @@ public class taller1 {
         }
 
         System.out.println("Acceso denegado");
-        menuPrincipal(scanner);
+        //menuPrincipal(scanner); quité esta recursión para que se arregle el errror de poner 3 dos veces para salir
 
         return -1;
     }
@@ -208,7 +205,6 @@ public class taller1 {
 			default:
 				System.out.println("Opción inválida");
 				System.out.println();
-				modificarActividad(scanner, indice);
 				break;
 		
 			} 	
@@ -266,7 +262,7 @@ public class taller1 {
         } else {
 
             System.out.println("Contraseña incorrecta");
-            menuUsuarios(scanner, indice);
+            return;
         }
     }
     
@@ -505,7 +501,7 @@ public class taller1 {
                     System.out.println("Opción inválida");
             }
         } catch (Exception e) {
-            System.out.println("Opción inválida, Ingresa el número de la opcion");
+            System.out.println("Opción inválida");
             op = 0;
         }
     } while (op != 3);
@@ -518,21 +514,6 @@ public class taller1 {
     	Scanner scanner = new Scanner(System.in);
         //Acá abrimos el menú principal
         menuPrincipal(scanner);
-        
-        
     }
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
