@@ -130,6 +130,10 @@ public class taller1 {
     	String nuevaActividad = partes[3];
     	int opcionn;
     	
+        if (!partes[0].equals(usuarios[indice][0])) {
+        System.out.println("No puedes modificar actividades de otro usuario.");
+        return;}
+
 		do {
 			System.out.println("¿Qué deseas modificar?\n0) Regresar\n1) Fecha\n2) Duracion\n3) Tipo de actividad");
 			opcionn = Integer.parseInt(scanner.nextLine());
@@ -165,17 +169,25 @@ public class taller1 {
 		reescribirTXT1("Registros.txt", registros, cantidadRegistros);
     }
     
-    public static void eliminarActividad(Scanner scanner) {
+    public static void eliminarActividad(Scanner scanner, int indice) {
     	abrirArchRegistros();
     	System.out.println("¿Qué actividad deseas eliminar?");
     	for (int i = 0; i < cantidadRegistros; i++) {
-            System.out.println((i + 1) + ")" + registros[i]);
-        }
+			String[] partes = registros[i].split(";");
+			if (partes[0].equals(usuarios[indice][0])) { 
+				System.out.println((i + 1) + ")" + registros[i]);
+			}
+		}
     	int actividadEliminada = Integer.parseInt(scanner.nextLine()) -1;
+
         while (actividadEliminada < 0 || actividadEliminada >= cantidadRegistros) {
             System.out.println("Número inválido. Por favor, ingrese un número válido:");
             actividadEliminada = Integer.parseInt(scanner.nextLine()) -1;
         }
+        if (!registros[actividadEliminada].split(";")[0].equals(usuarios[indice][0])) {
+            System.out.println("No puedes eliminar actividades de otro usuario.");
+            return;}
+
     	for (int i = actividadEliminada; i < cantidadRegistros; i++) {
     		registros[i] = registros[i + 1];
     	}
@@ -220,7 +232,7 @@ public class taller1 {
         			modificarActividad(scanner, indice);
         			break;
         		case 3:
-        			eliminarActividad(scanner);
+        			eliminarActividad(scanner, indice);
         			break;
         		case 4:
         			cambiarContraseña(scanner, indice);
